@@ -344,6 +344,7 @@ public class MainActivity extends AppCompatActivity {
                             public void onFinish() {
                                 mBluetoothBridge.mConnectionSuccess = true;
                                 bleStateImageChange();
+                                Log.d("@ckw", "onFinish!");
                             }
                         }.start();
 
@@ -390,6 +391,8 @@ public class MainActivity extends AppCompatActivity {
                 double COPx = 0;
                 double COPy = 0;
                 final byte[] txValue = intent.getByteArrayExtra(BleDataTransferService.EXTRA_DATA);
+
+                Log.d("@ckw","Ble Data:"+Arrays.toString(txValue)); //@ckw
 
                 if (txValue.length == 16) {
 
@@ -495,6 +498,7 @@ public class MainActivity extends AppCompatActivity {
                 String str = decimalFormat.format(Battery);
 
                 TextBat.setText("Battery " + str + " V");
+                Log.d("@ckw", "hello");
             }
             //*********************//
             if (action.equals(BleDataTransferService.DEVICE_DOES_NOT_SUPPORT_IMAGE_TRANSFER)){
