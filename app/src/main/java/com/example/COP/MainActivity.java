@@ -3,6 +3,7 @@ package com.example.COP;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatImageView;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
@@ -31,6 +32,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.dinuscxj.progressbar.CircleProgressBar;
+import com.example.COP.Utils.Stopwatch;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.charts.ScatterChart;
 import com.github.mikephil.charting.components.YAxis;
@@ -95,13 +98,19 @@ public class MainActivity extends AppCompatActivity {
     private BluetoothBridge mBluetoothBridge = BluetoothBridge.getInstance();
 
 
+    //@ckw
+    private AppCompatImageView left_monitor, right_monitor;
+    private AppCompatImageView btn_set, btn_ble;
+    private TextView txt_alram, btn_start;
+    private Stopwatch stopWatch = new Stopwatch();
+    private CircleProgressBar circleProgress_01, circleProgress_02, circleProgress_03, circleProgress_04;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        btStart = findViewById(R.id.btn_start);
+        /* btStart = findViewById(R.id.btn_start);
         btStop = findViewById(R.id.btn_stop);
         btCalibration = findViewById(R.id.btn_calibration);
 
@@ -123,7 +132,7 @@ public class MainActivity extends AppCompatActivity {
         IVCIR = findViewById(R.id.ivCIR);
         IVCIR.setX(0);
         IVCIR.setY(0);
-        IVCIR.setVisibility(View.INVISIBLE);
+        IVCIR.setVisibility(View.INVISIBLE); */
 
 
 /*
@@ -134,26 +143,38 @@ public class MainActivity extends AppCompatActivity {
         scatterChart.setData(scatterData);
         scatterDataSet.setValueTextSize(0f);
 */
+        //@ckw
+        left_monitor = (AppCompatImageView)findViewById(R.id.svg_left_monitor);
+        right_monitor = (AppCompatImageView)findViewById(R.id.svg_right_monitor);
+        btn_set = (AppCompatImageView)findViewById(R.id.btn_set);
+        btn_ble = (AppCompatImageView)findViewById(R.id.btn_ble);
+        txt_alram = (TextView)findViewById(R.id.txt_alram);
+        btn_start = (TextView)findViewById(R.id.btn_start);
 
+        circleProgress_01 = (CircleProgressBar)findViewById(R.id.circleProgress_01);
 
+        btn_start.setOnClickListener(new ButtonClickListener());
+        btn_set.setOnClickListener(new ButtonClickListener());
 
-        btStart.setOnClickListener(new View.OnClickListener() {
+        /*btn_start.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {  // START
+                Log.d("@ckw", "onClick");
                 if(mBluetoothBridge.mService.isConnected()) {
                     mBluetoothBridge.mService.sendCommand(0x53, null);
                 }
             }
-        });
-        btStop.setOnClickListener(new View.OnClickListener() {
+        });*/
+        /*btn_start.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {  // STOP
+                Log.d("@ckw", "stopClick");
                 if(mBluetoothBridge.mService.isConnected()) {
                     mBluetoothBridge.mService.sendCommand(0x50, null);
                 }
             }
-        });
-        btCalibration.setOnClickListener(new View.OnClickListener() {
+        });*/
+        /*btCalibration.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if(mBluetoothBridge.mService.isConnected()) {
@@ -186,8 +207,36 @@ public class MainActivity extends AppCompatActivity {
         //myChart.addNewEntry(mLineChartL, 2);
         //myChart.addNewEntry(mLineChartL, 3);
 
-        //mLineChartL.clearValues();
+        //mLineChartL.clearValues();*/
 
+    }
+    /**
+     * @ckw 이벤트 처리
+     */
+
+    private class ButtonClickListener implements View.OnClickListener{
+        @Override
+        public void onClick(View view) {
+            switch (view.getId()){
+                case R.id.btn_set :
+                    Log.d("@ckw", "option");
+                    // 설정창
+                    break;
+                case R.id.txt_alram :
+                    // 설정창 이동할것
+                    break;
+                case R.id.btn_start :
+                case R.id.btn_ble :
+                    Log.d("@ckw", "btn ble Click");
+                    /**
+                     * 처음 눌렀을때 : 해야할일
+                     *  1. 블루투스 연결 -> 성공시 -> btn_ble.setVisible(View.GONE); (BLE 이미지 없앰) -> btn_start.setText("START");
+                     * 연결 성공후 눌렀을때 :
+                     *  1. 스톱워치 작동 -> stopWatch.start(); or stopWatch.stop();
+                     */
+                    break;
+            }
+        }
     }
 
 
@@ -206,10 +255,10 @@ public class MainActivity extends AppCompatActivity {
 
         ble_service_init();
 
-        ivBt = findViewById(R.id.ivBt);
+        //ivBt = findViewById(R.id.ivBt);
 
         // Handler Disconnect & Connect button
-        ivBt.setOnClickListener(new View.OnClickListener() {
+        /*ivBt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (!mBluetoothBridge.mBtAdapter.isEnabled()) {
@@ -230,7 +279,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
             }
-        });
+        });*/
     }
 
     @Override
