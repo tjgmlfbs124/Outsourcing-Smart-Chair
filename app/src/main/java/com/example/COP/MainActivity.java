@@ -28,12 +28,14 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.IBinder;
+import android.os.Vibrator;
 import android.text.InputType;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -102,10 +104,12 @@ public class MainActivity extends AppCompatActivity {
     private TextView txt_alram, btn_start;
     private Stopwatch stopWatch = new Stopwatch();
     private CircleProgressBar circleProgress_01, circleProgress_02, circleProgress_03, circleProgress_04;
+    private ProgressBar bleProgress;
 
     private PendingIntent pendingIntent;
 
-    private Integer alertTime = 5;
+    private Integer alertTime = 5; // 시간 설정
+    static Vibrator vibrator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -153,7 +157,11 @@ public class MainActivity extends AppCompatActivity {
         txt_alram = (TextView)findViewById(R.id.txt_alram);
         btn_start = (TextView)findViewById(R.id.btn_start);
 
+        bleProgress = (ProgressBar)findViewById(R.id.progressBar);
+
         circleProgress_01 = (CircleProgressBar)findViewById(R.id.circleProgress_01);
+
+        vibrator = (Vibrator)getSystemService(Context.VIBRATOR_SERVICE);
 
         btn_start.setOnClickListener(new ButtonClickListener());
         btn_set.setOnClickListener(new ButtonClickListener());
@@ -230,7 +238,9 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.btn_start :
                 case R.id.btn_ble :
                     Log.d("@ckw", "btn ble Click");
-                    showAlertDialog();
+
+                    bleSwitch();
+
                     /**
                      * 처음 눌렀을때 : 해야할일
                      *  1. 블루투스 연결 -> 성공시 -> btn_ble.setVisible(View.GONE); (BLE 이미지 없앰) -> btn_start.setText("START");
@@ -266,8 +276,10 @@ public class MainActivity extends AppCompatActivity {
     /** @ckw AlertDialog
      * */
 
-    // ~ 잘못된 자세 알람
+    // 잘못된 자세 알람
     private void showAlertDialog() {
+        vibrator.vibrate(1000); // 진동 설정
+
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("자세가 바르지 않습니다.");//.setMessage("")
         builder.setPositiveButton("확인", new DialogInterface.OnClickListener() {
@@ -280,6 +292,7 @@ public class MainActivity extends AppCompatActivity {
         alertDialog.show();
     }
 
+    // 알람 시간 설정
     private void showTimeEditDialog() {
         final EditText editText = new EditText(this);
         editText.setInputType(InputType.TYPE_CLASS_NUMBER);
@@ -305,11 +318,24 @@ public class MainActivity extends AppCompatActivity {
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
     }
-    /**
-     * @ckw 진동 설정
-     */
 
-    //private void
+    /**
+     *  이벤트 설정
+     * */
+    private void bleSwitch() {
+        // 1연결 시도
+        // 2-1 연결 시도 성공 (연결중)
+        btn_ble.setVisibility(View.INVISIBLE);
+        bleProgress.setVisibility(View.VISIBLE);
+        // 2-2 연결 시도 실패
+
+        // 3-1 연결 성공
+        // 3-2 연결 실패
+    }
+
+    private void bleConnectionAttempt() {
+
+    }
 
     /**
      * --------------------- Bluetooth Pairing -------------------------------
