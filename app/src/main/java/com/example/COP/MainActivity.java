@@ -1,13 +1,5 @@
 package com.example.COP;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.AppCompatImageView;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
-
 import android.Manifest;
 import android.app.Activity;
 import android.app.AlarmManager;
@@ -38,6 +30,14 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatImageView;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.dinuscxj.progressbar.CircleProgressBar;
 import com.example.COP.Utils.Stopwatch;
@@ -330,8 +330,6 @@ public class MainActivity extends AppCompatActivity {
         bleConnectionAttempt();
         // 1연결 시도
         // 2-1 연결 시도 성공 (연결중)
-        btn_ble.setVisibility(View.INVISIBLE);
-        bleProgress.setVisibility(View.VISIBLE);
         // 2-2 연결 시도 실패
 
         // 3-1 연결 성공

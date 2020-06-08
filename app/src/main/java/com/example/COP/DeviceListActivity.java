@@ -16,8 +16,6 @@ import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
-//import android.support.v4.app.ActivityCompat;
-//import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -27,7 +25,6 @@ import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,6 +38,9 @@ import java.util.Map;
 import java.util.UUID;
 
 import static android.Manifest.permission.ACCESS_COARSE_LOCATION;
+
+//import android.support.v4.app.ActivityCompat;
+//import android.support.v4.content.ContextCompat;
 
 public class DeviceListActivity extends Activity {
 
@@ -82,7 +82,8 @@ public class DeviceListActivity extends Activity {
 
         super.onCreate(savedInstanceState);
         Log.d(TAG, "onCreate");
-        getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.title_bar);
+        //getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.title_bar);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.device_list);
         android.view.WindowManager.LayoutParams layoutParams = this.getWindow().getAttributes();
         layoutParams.gravity=Gravity.TOP;
@@ -198,7 +199,7 @@ public class DeviceListActivity extends Activity {
         }
 
         private void processResult(ScanResult result) {
-            Log.i(TAG, "New LE Device: " + result.getDevice().getName() + " @ " + result.getRssi());
+            //Log.i(TAG, "New LE Device: " + result.getDevice().getName() + " @ " + result.getRssi());
 
             /*
              * Create a new beacon from the list of obtains AD structures
@@ -210,8 +211,10 @@ public class DeviceListActivity extends Activity {
             mHandler.sendMessage(Message.obtain(null, 0, beacon));*/
 
             if(result.getDevice().getName()!=null) {
-                if(result.getDevice().getName().equals(BLE_DEVICE_NAME)) {
-                    Log.i(TAG, "New LE Device: pH-Device Matching");
+                if(result.getDevice().getName().equals(BLE_DEVICE_NAME)) { //@ckw 디바이스 검색됨
+                    //Log.i(TAG, "New LE Device: pH-Device Matching");
+                    Log.i("@ckw", "Device Matching");
+                    mBluetoothLeScanner.stopScan(mScanCallback);
                     addDevice(result.getDevice(), result.getRssi(), result.getScanRecord().getBytes(), 0);
                 }
             }
@@ -303,7 +306,7 @@ public class DeviceListActivity extends Activity {
             devRssiValues.put(device.getAddress(), rssi);
             if (!deviceFound) {
                 deviceList.add(device);
-                mEmptyList.setVisibility(View.GONE);
+                //mEmptyList.setVisibility(View.GONE);
                 deviceAdapter.notifyDataSetChanged();
             }
         }

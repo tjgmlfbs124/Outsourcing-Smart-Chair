@@ -39,7 +39,7 @@
         <activity
             android:name="com.example.COP.DeviceListActivity"
             android:label="COP"
-            android:theme="@android:style/Theme.Dialog" />
+            android:theme="@android:style/Theme.DeviceDefault.Light.Dialog" />
 
         <receiver android:name=".AlarmReceiver" />
     </application>
