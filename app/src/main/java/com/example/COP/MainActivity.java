@@ -97,7 +97,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     /**
-     * @ckw 객체 설정
+     * @ckw 객체 선언
      */
     private AppCompatImageView left_monitor, right_monitor;
     private AppCompatImageView btn_set, btn_ble;
@@ -109,7 +109,7 @@ public class MainActivity extends AppCompatActivity {
     private PendingIntent pendingIntent;
 
     private Integer alertTime = 5; // 시간 설정
-    static Vibrator vibrator;
+    static Vibrator vibrator; // 진동설정
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -149,7 +149,8 @@ public class MainActivity extends AppCompatActivity {
         scatterChart.setData(scatterData);
         scatterDataSet.setValueTextSize(0f);
 */
-        //@ckw
+        /** @ckw 객체 초기화
+         * */
         left_monitor = (AppCompatImageView)findViewById(R.id.svg_left_monitor);
         right_monitor = (AppCompatImageView)findViewById(R.id.svg_right_monitor);
         btn_set = (AppCompatImageView)findViewById(R.id.btn_set);
@@ -165,6 +166,9 @@ public class MainActivity extends AppCompatActivity {
 
         btn_start.setOnClickListener(new ButtonClickListener());
         btn_set.setOnClickListener(new ButtonClickListener());
+
+        // 블루투스 초기화
+        bluetoothDevicePairingInit();
 
         /*btn_start.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -320,9 +324,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     *  이벤트 설정
+     *  @ckw 이벤트 설정
      * */
     private void bleSwitch() {
+        bleConnectionAttempt();
         // 1연결 시도
         // 2-1 연결 시도 성공 (연결중)
         btn_ble.setVisibility(View.INVISIBLE);
@@ -333,8 +338,27 @@ public class MainActivity extends AppCompatActivity {
         // 3-2 연결 실패
     }
 
-    private void bleConnectionAttempt() {
+    /** @ckw 블루투스 세팅
+     * */
 
+    private void bleConnectionAttempt() {
+        if (!mBluetoothBridge.mBtAdapter.isEnabled()) {
+            Log.i(TAG, "onClick - BT not enabled yet");
+            Intent enableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+            startActivityForResult(enableIntent, mBluetoothBridge.REQUEST_ENABLE_BT);
+        } else {
+            if (mBluetoothBridge.mService.isConnected()) {
+                //Disconnect button pressed
+                if (mBluetoothBridge.mDevice != null) {
+                    mBluetoothBridge.mService.disconnect();
+                }
+            } else {
+                //Connect button pressed, open DeviceListActivity class, with popup windows that scan for devices
+
+                Intent newIntent = new Intent(MainActivity.this, DeviceListActivity.class);
+                startActivityForResult(newIntent, mBluetoothBridge.REQUEST_SELECT_DEVICE);
+            }
+        }
     }
 
     /**

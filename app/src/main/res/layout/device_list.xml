@@ -5,51 +5,28 @@
     android:layout_height="fill_parent"
     android:orientation="vertical" >
 
-    <RelativeLayout
-        android:layout_width="fill_parent"
+    <TextView
+        android:id="@+id/title_devices"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="#666" >
+        android:layout_centerInParent="true"
+        android:paddingLeft="12dp"
+        android:paddingRight="50dp"
+        android:text="연결중..."
+        android:layout_gravity="center"
+        android:textSize="15dip" />
 
-        <TextView
-            android:id="@+id/title_devices"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:paddingLeft="12dp"
-            android:paddingRight="50dp"
-            android:text="Select a device"
-            android:textColor="#fff"
-            android:textSize="15dip" />
+    <ProgressBar
+        android:id="@+id/progressBar2"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
-        <ImageView
-            android:id="@+id/about"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:src="@android:drawable/ic_menu_info_details" />
-    </RelativeLayout>
-    <LinearLayout android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:orientation="vertical" >
-        <ListView
-            android:id="@+id/new_devices"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:layout_weight="2"
-            android:stackFromBottom="true" />
-
-        <TextView
-            android:id="@+id/empty"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Scanning for devices..." />
-
-        <Button
-            android:id="@+id/btn_cancel"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@android:string/cancel" />
-    </LinearLayout>
+    <Button
+        android:id="@+id/btn_cancel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="취소" />
 
 </LinearLayout>

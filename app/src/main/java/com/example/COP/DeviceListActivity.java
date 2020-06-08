@@ -109,7 +109,7 @@ public class DeviceListActivity extends Activity {
             return;
         }
         populateList();
-        mEmptyList = (TextView) findViewById(R.id.empty);
+        //mEmptyList = (TextView) findViewById(R.id.empty);
         Button cancelButton = (Button) findViewById(R.id.btn_cancel);
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -129,9 +129,9 @@ public class DeviceListActivity extends Activity {
         deviceAdapter = new DeviceAdapter(this, deviceList);
         devRssiValues = new HashMap<String, Integer>();
 
-        ListView newDevicesListView = (ListView) findViewById(R.id.new_devices);
+        /*ListView newDevicesListView = (ListView) findViewById(R.id.new_devices);
         newDevicesListView.setAdapter(deviceAdapter);
-        newDevicesListView.setOnItemClickListener(mDeviceClickListener);
+        neDevicesListView.setOnItemClickListener(mDeviceClickListener);*/
 
         scanLeDevice(true);
 
