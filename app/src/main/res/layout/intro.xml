@@ -1,6 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".Intro"
+    android:gravity="center"
+    tools:ignore="missingPrefix"
+    android:background="#203E6B">
+    <com.example.COP.Utils.ScalableLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:scale_base_width="1440"
+        app:scale_base_height="2560">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            app:scale_height="493"
+            app:scale_width="1440"
+            app:srcCompat="@drawable/ic_svg_intro"/>
+    </com.example.COP.Utils.ScalableLayout>
 
 </LinearLayout>

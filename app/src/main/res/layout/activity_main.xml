@@ -1,226 +1,212 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    android:orientation="vertical"
+    tools:context=".Intro"
+    android:gravity="center"
+    tools:ignore="missingPrefix"
+    android:background="#EFEFEE">
 
-
-    <ImageView
-        android:id="@+id/ivBt"
-        android:layout_width="35dp"
-        android:layout_height="35dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="3dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.933"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0"
-        app:srcCompat="@drawable/bluetooth_off" />
-
-    <TextView
-        android:id="@+id/tvBattery"
-        android:layout_width="227dp"
-        android:layout_height="45dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        android:gravity="center"
-        android:textSize="20dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.767"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.987" />
-
-    <Button
-        android:id="@+id/btn_stop"
+    <com.example.COP.Utils.ScalableLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        android:text="측정정지"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.475"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.913" />
+        app:scale_base_width="1440"
+        app:scale_base_height="2560">
 
-    <Button
-        android:id="@+id/btn_calibration"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        android:text="배터리 잔량획득"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.32"
-        app:layout_constraintStart_toEndOf="@+id/btn_stop"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.913" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:scale_height="190"
+            app:scale_left="0"
+            app:scale_top="0"
+            app:scale_width="1440"
+            android:background="#203E6B">
+        </LinearLayout>
 
-    <Button
-        android:id="@+id/btn_reset"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        android:text="Reset"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/btn_stop"
-        app:layout_constraintHorizontal_bias="0.736"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.987" />
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:scale_height="120"
+            app:scale_top="35"
+            android:layout_gravity="center_horizontal"
+            app:scale_width="720"
+            app:srcCompat="@drawable/ic_svg_head_logo"/>
 
-    <Button
-        android:id="@+id/btn_start"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        android:text="측정시작"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/btn_stop"
-        app:layout_constraintHorizontal_bias="0.736"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.913" />
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/btn_set"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:scale_height="190"
+            app:scale_top="0"
+            app:scale_left="1250"
+            app:scale_width="190"
+            app:srcCompat="@drawable/ic_svg_setting"/>
 
-    <TextView
-        android:id="@+id/tv_5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="10dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.782"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.143" />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:scale_height="643"
+            app:scale_left="60"
+            app:scale_top="400"
+            app:scale_width="643"
+            android:background="@drawable/menu_background_white"/>
 
-    <TextView
-        android:id="@+id/tv_2_11"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="10dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.254"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.044" />
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/svg_left_monitor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/ic_svg_left_monitor_03"
+            app:scale_height="480"
+            app:scale_left="189"
+            app:scale_top="478"
+            app:scale_width="350"/>
 
-    <TextView
-        android:id="@+id/tv_11"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="10dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.18"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.103" />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:scale_height="643"
+            app:scale_left="744"
+            app:scale_top="400"
+            app:scale_width="643"
+            android:background="@drawable/menu_background_white"/>
 
-    <TextView
-        android:id="@+id/tv_2_1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="10dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.675"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.044" />
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/svg_right_monitor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/ic_svg_right_monitor_01"
+            app:scale_height="480"
+            app:scale_left="900"
+            app:scale_top="478"
+            app:scale_width="350"/>
 
-    <TextView
-        android:id="@+id/tv_1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="10dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.782"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.103" />
+        <TextView
+            android:id="@+id/btn_start"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:scale_height="147"
+            app:scale_left="70"
+            app:scale_top="1120"
+            app:scale_width="1300"
+            android:gravity="center"
+            app:scale_textsize="80"
+            android:textColor="#ffffff"
+            android:background="@drawable/menu_background_blue"/>
 
-    <TextView
-        android:id="@+id/tv_7"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="10dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.18"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.144" />
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/btn_ble"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:scale_height="110"
+            app:scale_left="0"
+            app:scale_top="1140"
+            app:scale_width="80"
+            app:scale_textsize="80"
+            android:layout_gravity="center_horizontal"
+            android:textColor="#ffffff"
+            android:background="@drawable/ic_svg_bluetooth"/>
 
-    <TextView
-        android:id="@+id/COPY"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="TextView"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.139"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:scale_height="1113"
+            app:scale_left="60"
+            app:scale_top="1336"
+            app:scale_width="1300"
+            android:background="@drawable/menu_background_white"/>
 
-    <TextView
-        android:id="@+id/COPX"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="TextView"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.128"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.468" />
+        <TextView
+            android:id="@+id/txt_alram"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:scale_height="180"
+            app:scale_left="60"
+            app:scale_top="1336"
+            app:scale_width="1300"
+            android:gravity="center"
+            android:text="올바른 자세를 유지중입니다."
+            app:scale_textsize="60"
+            android:textColor="#203E6B"/>
 
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="350dp"
-        android:layout_height="350dp"
-        android:background="#333333"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.585"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.607" />
+        <com.dinuscxj.progressbar.CircleProgressBar
+            android:id="@+id/circleProgress_01"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:progress_text_color="#203E6B"
+            app:progress_text_size="80px"
+            app:progress_stroke_width="10dp"
+            app:style="solid_line"
+            app:progress_start_degree="-90"
+            app:drawBackgroundOutsideProgress="true"
+            app:progress_shader="sweep"
+            app:progress_stroke_cap="round"
+            app:line_width="20dp"
+            app:line_count="30"
+            app:scale_height="410"
+            app:scale_left="234"
+            app:scale_top="1525"
+            app:scale_width="410"/>
 
-    <ImageView
-        android:id="@+id/ivCIR"
-        android:layout_width="51dp"
-        android:layout_height="53dp"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView"
-        app:layout_constraintEnd_toEndOf="@+id/imageView"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/imageView"
-        app:layout_constraintTop_toTopOf="@+id/imageView"
-        app:layout_constraintVertical_bias="0.0"
-        app:srcCompat="@drawable/ic_action_cir" />
+        <com.dinuscxj.progressbar.CircleProgressBar
+            android:id="@+id/circleProgress_02"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:progress_text_color="#203E6B"
+            app:progress_text_size="80px"
+            app:progress_stroke_width="10dp"
+            app:style="solid_line"
+            app:progress_start_degree="-90"
+            app:drawBackgroundOutsideProgress="true"
+            app:progress_shader="sweep"
+            app:progress_stroke_cap="round"
+            app:line_width="20dp"
+            app:line_count="30"
+            app:scale_height="410"
+            app:scale_left="790"
+            app:scale_top="1525"
+            app:scale_width="410"/>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <com.dinuscxj.progressbar.CircleProgressBar
+            android:id="@+id/circleProgress_03"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:progress_text_color="#203E6B"
+            app:progress_text_size="80px"
+            app:progress_stroke_width="10dp"
+            app:style="solid_line"
+            app:progress_start_degree="-90"
+            app:drawBackgroundOutsideProgress="true"
+            app:progress_shader="sweep"
+            app:progress_stroke_cap="round"
+            app:line_width="20dp"
+            app:line_count="30"
+            app:scale_height="410"
+            app:scale_left="234"
+            app:scale_top="1988"
+            app:scale_width="410" />
+
+        <com.dinuscxj.progressbar.CircleProgressBar
+            android:id="@+id/circleProgress_04"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:progress_text_color="#203E6B"
+            app:progress_text_size="80px"
+            app:progress_stroke_width="10dp"
+            app:style="solid_line"
+            app:progress_start_degree="-90"
+            app:drawBackgroundOutsideProgress="true"
+            app:progress_shader="sweep"
+            app:progress_stroke_cap="round"
+            app:line_width="20dp"
+            app:line_count="30"
+            app:scale_height="410"
+            app:scale_left="790"
+            app:scale_top="1988"
+            app:scale_width="410" />
+
+    </com.example.COP.Utils.ScalableLayout>
+
+</LinearLayout>

@@ -46,11 +46,8 @@ import java.util.Arrays;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-
     private static final String TAG = "MainActivity";
-
     private static final int PHYSIONICS_PERMISSIONS_REQUEST_CODE = 20002;
-
 
     float off_x = 180;
     float off_y = 600;
