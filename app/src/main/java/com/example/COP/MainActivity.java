@@ -10,39 +10,35 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlarmManager;
+import android.app.AlertDialog;
+import android.app.PendingIntent;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
 import android.icu.text.DecimalFormat;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.IBinder;
+import android.text.InputType;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.dinuscxj.progressbar.CircleProgressBar;
 import com.example.COP.Utils.Stopwatch;
-import com.github.mikephil.charting.charts.LineChart;
-import com.github.mikephil.charting.charts.ScatterChart;
-import com.github.mikephil.charting.components.YAxis;
-import com.github.mikephil.charting.data.BarEntry;
-import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.data.ScatterData;
-import com.github.mikephil.charting.data.ScatterDataSet;
-import com.github.mikephil.charting.interfaces.datasets.IScatterDataSet;
-import com.github.mikephil.charting.utils.ColorTemplate;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -98,12 +94,18 @@ public class MainActivity extends AppCompatActivity {
     private BluetoothBridge mBluetoothBridge = BluetoothBridge.getInstance();
 
 
-    //@ckw
+    /**
+     * @ckw 객체 설정
+     */
     private AppCompatImageView left_monitor, right_monitor;
     private AppCompatImageView btn_set, btn_ble;
     private TextView txt_alram, btn_start;
     private Stopwatch stopWatch = new Stopwatch();
     private CircleProgressBar circleProgress_01, circleProgress_02, circleProgress_03, circleProgress_04;
+
+    private PendingIntent pendingIntent;
+
+    private Integer alertTime = 5;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -220,7 +222,7 @@ public class MainActivity extends AppCompatActivity {
             switch (view.getId()){
                 case R.id.btn_set :
                     Log.d("@ckw", "option");
-                    // 설정창
+                    showTimeEditDialog();
                     break;
                 case R.id.txt_alram :
                     // 설정창 이동할것
@@ -228,6 +230,7 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.btn_start :
                 case R.id.btn_ble :
                     Log.d("@ckw", "btn ble Click");
+                    showAlertDialog();
                     /**
                      * 처음 눌렀을때 : 해야할일
                      *  1. 블루투스 연결 -> 성공시 -> btn_ble.setVisible(View.GONE); (BLE 이미지 없앰) -> btn_start.setText("START");
@@ -239,6 +242,74 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * @ckw 알람
+     * */
+    private void myAlarm() {
+        Log.d("@ckw", "alarm set");
+        Intent intent = new Intent(this, AlarmReceiver.class);
+        intent.putExtra("alarm", 0);
+        AlarmManager alarmManager = (AlarmManager)this.getSystemService(ALARM_SERVICE);
+        pendingIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
+
+        //Calendar calendar =
+        alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), pendingIntent);
+    }
+
+    private void cancelMyAlarm() {
+        Log.d("@ckw", "alarm cancel");
+        AlarmManager alarmManager = (AlarmManager)this.getSystemService(ALARM_SERVICE);
+        Intent intent = new Intent(this, MainActivity.class);
+        alarmManager.cancel(pendingIntent);
+    }
+
+    /** @ckw AlertDialog
+     * */
+
+    // ~ 잘못된 자세 알람
+    private void showAlertDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("자세가 바르지 않습니다.");//.setMessage("")
+        builder.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Log.d("@ckw", "close");
+            }
+        });
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
+
+    private void showTimeEditDialog() {
+        final EditText editText = new EditText(this);
+        editText.setInputType(InputType.TYPE_CLASS_NUMBER);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("시간을 설정해 주세요. (분)");
+
+        builder.setView(editText);
+        builder.setPositiveButton("입력",
+            new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                    alertTime = Integer.parseInt(editText.getText().toString());
+                    //Toast.makeText(getApplicationContext(),editText.getText().toString()+"분 설정" ,Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(),alertTime.toString()+"분 설정" ,Toast.LENGTH_LONG).show();
+                }
+            });
+        builder.setNegativeButton("취소",
+            new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+
+                }
+            });
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
+    /**
+     * @ckw 진동 설정
+     */
+
+    //private void
 
     /**
      * --------------------- Bluetooth Pairing -------------------------------
