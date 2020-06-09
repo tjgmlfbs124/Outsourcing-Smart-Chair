@@ -13,7 +13,7 @@ import org.json.JSONObject;
  *
  */
 public class PreferenceManager {
-    public static final String PREFERENCES_NAME = "beaconData";
+    public static final String PREFERENCES_NAME = "smart_sitting01";
     private static final String DEFAULT_VALUE_STRING = "";
     private static final boolean DEFAULT_VALUE_BOOLEAN = false;
     private static final int DEFAULT_VALUE_INT = -1;

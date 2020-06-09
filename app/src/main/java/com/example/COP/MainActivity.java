@@ -43,6 +43,9 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import com.dinuscxj.progressbar.CircleProgressBar;
 import com.example.COP.Utils.Stopwatch;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -50,6 +53,10 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
     private static final int PHYSIONICS_PERMISSIONS_REQUEST_CODE = 20002;
+
+    private static final int VERTICAL_PERCENT_STANDARD = 60; // 앞뒤 기울어짐 기준값 (> 앞으로 기울어짐)
+    private static final int HORIZONTAL_PERCENT_STANDARD = 60; // 좌우 기울어짐 기준값 (> 오른쪽으로 기울어짐)
+    private static final int PRESSURE_STANDARD = 30; // 의미있는 압력 기준값
 
     float off_x = 180;
     float off_y = 600;
@@ -111,10 +118,17 @@ public class MainActivity extends AppCompatActivity {
 
     private boolean verticalPosition;
     private boolean horizontalPosition;
+    private double wholeValue = 0;
+    private double verticalPosPercent = 0;
+    private double horizontalPosPercent = 0;
 
     private Handler mHandler;
     private Runnable mRuannble;
     private boolean handlerStarted;
+
+    private Handler logHandler;
+    private Runnable logRunnable;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -177,13 +191,44 @@ public class MainActivity extends AppCompatActivity {
 
         mHandler = new Handler();
         mRuannble = new Runnable() {
-
             @Override
             public void run() {
                 showAlertDialog();
             }
         };
         handlerStarted = false;
+
+        logHandler = new Handler();
+        logRunnable = new Runnable() {
+            @Override
+            public void run() {
+                if(wholeValue > PRESSURE_STANDARD) {
+                    // 의미있는 데이터
+                    try {
+                        JSONObject obj = new JSONObject();
+                        obj.put("date", System.currentTimeMillis());
+                        Integer temp = 0;
+                        if(verticalPosPercent > VERTICAL_PERCENT_STANDARD) temp = -1;
+                        else if(verticalPosPercent <= 100-VERTICAL_PERCENT_STANDARD) temp = 1;
+                        else temp = 0;
+                        obj.put("verPos", temp);
+
+                        if(horizontalPosPercent > HORIZONTAL_PERCENT_STANDARD) temp = 1;
+                        else if(horizontalPosPercent <= 100-VERTICAL_PERCENT_STANDARD) temp = -1;
+                        else temp = 0;
+                        obj.put("horPos", temp);
+                        //obj.put("verPos", 1); // -1:앞/0:센터/1:뒤
+                        //obj.put("horPos", -1); // -1:왼/0:센터/1:우
+
+                        //PreferenceManager.setJsonArray(getApplicationContext(),"TEST", obj);
+                        Log.d("@ckw", "save...");
+                    } catch (JSONException e) {
+                        Log.e("@ckw", e.getMessage() );
+                    }
+                }
+                logHandler.postDelayed(this, 5000);
+            }
+        };
 
         // 블루투스 초기화
         bluetoothDevicePairingInit();
@@ -281,6 +326,46 @@ public class MainActivity extends AppCompatActivity {
                         else {
                             stopWatch.stop();
                         }
+
+                        /*try {
+                            JSONArray ja = PreferenceManager.getJsonArray(getApplicationContext(), "TEST");
+                            String result = "";
+                            for(int i=0; i < ja.length(); i++) {
+                                JSONObject tempObj = ja.getJSONObject(i);
+                                result += "\ndate:"+tempObj.getString("date")+", verPos:"+tempObj.getString("verPos")+", horPos:"+tempObj.getString("horPos");
+                            }
+                            Log.d("@ckw", result);
+                        } catch (JSONException e) {
+                            Log.d("@ckw", e.getMessage());
+                        }*/
+
+
+                        /*
+                        Date date = new Date(System.currentTimeMillis());
+
+                        Calendar calendar = Calendar.getInstance();
+                        calendar.add(Calendar.YEAR, -1);
+                        Date date2 = calendar.getTime();
+
+                        //Log.d("@ckw", Integer.toString(date.compareTo(date2)) );
+                        Log.d("@ckw", "data:"+(String)DateFormat.format("yyMMdd-HHmmss", date));
+
+                        Log.d("@ckw", "data2:"+(String)DateFormat.format("yyMMdd-HHmmss", date2));
+
+                        Long curTime = (System.currentTimeMillis());
+                        String now = "curT:"+(String)DateFormat.format("yyMMdd-HHmmss", curTime);
+                        Log.d("@ckw", now);
+
+
+                        try {
+                            JSONObject obj = new JSONObject();
+                            obj.put("date", System.currentTimeMillis());
+                            obj.put("verPos", 1); // -1:앞/0:센터/1:뒤
+                            obj.put("horPos", -1); // -1:왼/0:센터/1:우
+                        } catch (JSONException e) {
+                            Log.d("@ckw", e.getMessage());
+                        }*/
+
                     }
                     /**
                      * 처음 눌렀을때 : 해야할일
@@ -346,6 +431,7 @@ public class MainActivity extends AppCompatActivity {
     private void showTimeEditDialog() {
         final EditText editText = new EditText(this);
         editText.setInputType(InputType.TYPE_CLASS_NUMBER);
+        editText.setText(alertTime.toString());
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("시간을 설정해 주세요. (초)");
@@ -396,6 +482,7 @@ public class MainActivity extends AppCompatActivity {
                 //Connect button pressed, open DeviceListActivity class, with popup windows that scan for devices
 
                 Intent newIntent = new Intent(MainActivity.this, DeviceListActivity.class);
+                //newIntent.putExtra("string",)
                 startActivityForResult(newIntent, mBluetoothBridge.REQUEST_SELECT_DEVICE);
             }
         }
@@ -656,26 +743,28 @@ public class MainActivity extends AppCompatActivity {
                     double LB = (Math.abs(raw_LC1)*100);
                     double RB = (Math.abs(raw_LC2)*100);
 
-                    double wholeValue = LF+RF+LB+RB;
+                    wholeValue = LF+RF+LB+RB;
 
                     int LF_percent = (int)((LF/wholeValue)*100);
                     int RF_percent = (int)((RF/wholeValue)*100);
                     int LB_percent = (int)((LB/wholeValue)*100);
                     int RB_percent = (int)((RB/wholeValue)*100);
 
+                    verticalPosPercent = LF_percent + RF_percent;
+                    horizontalPosPercent = RF_percent + RB_percent;
+
                     //Log.d("@ckw", "whole value:"+Double.toString(wholeValue));
-                    if(isReset && wholeValue > 30) { // 최소 데이터 크기 30 필요
+                    if(isReset && wholeValue > PRESSURE_STANDARD) { // 최소 데이터 크기 30 필요
                         circleProgress_01.setProgress( LF_percent );
                         circleProgress_02.setProgress( RF_percent );
                         circleProgress_03.setProgress( LB_percent );
                         circleProgress_04.setProgress( RB_percent );
 
-                        //boolean tempBool = false;
-                        if( LF_percent+RF_percent >= 60 ) {
+                        if( verticalPosPercent >= VERTICAL_PERCENT_STANDARD) {
                             // 앞으로 기울어짐
                             left_monitor.setImageResource(R.drawable.ic_svg_left_monitor_02);
                             verticalPosition = false;
-                        } else if (LF_percent+RF_percent < 40) {
+                        } else if (verticalPosPercent < 100-VERTICAL_PERCENT_STANDARD) {
                             // 뒤로 기울어짐
                             left_monitor.setImageResource(R.drawable.ic_svg_left_monitor_01);
                             verticalPosition = false;
@@ -686,11 +775,11 @@ public class MainActivity extends AppCompatActivity {
                         }
 
 
-                        if( RF_percent + RB_percent >= 60 ) {
+                        if( horizontalPosPercent >= HORIZONTAL_PERCENT_STANDARD) {
                             // 오른쪽으로 기울어짐
                             right_monitor.setImageResource(R.drawable.ic_svg_right_monitor_03);
                             horizontalPosition = false;
-                        } else if (RF_percent + RB_percent < 40) {
+                        } else if ( horizontalPosPercent < 100-HORIZONTAL_PERCENT_STANDARD) {
                             // 왼쪽으로 기울어짐
                             right_monitor.setImageResource(R.drawable.ic_svg_right_monitor_02);
                             horizontalPosition = false;
@@ -786,8 +875,11 @@ public class MainActivity extends AppCompatActivity {
 
                                 pre_LC_5  = LC_5;
                                 pre_LC_6  = LC_6;
+
+                                logHandler.post(logRunnable);
                             }
                         }, 500);
+
                     }
                 }
 
