@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".Intro"
+    android:gravity="center"
+    tools:ignore="missingPrefix"
+    android:background="#EFEFEE">
+
+    <com.example.COP.Utils.ScalableLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:scale_base_height="2560"
+        app:scale_base_width="1440">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#203E6B"
+            app:scale_height="190"
+            app:scale_left="0"
+            app:scale_top="0"
+            app:scale_width="1440"></LinearLayout>
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            app:scale_height="120"
+            app:scale_top="35"
+            app:scale_width="720"
+            app:srcCompat="@drawable/ic_svg_head_logo" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/menu_background_blue"
+            android:scaleX="-1"
+            app:scale_height="150"
+            app:scale_left="60"
+            app:scale_top="270"
+            app:scale_width="150"
+            app:srcCompat="@android:drawable/sym_action_chat" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:text="사용자 평균자세"
+            android:textColor="#3c3c3c"
+            android:textStyle="bold"
+            app:scale_height="150"
+            app:scale_left="250"
+            app:scale_textsize="80"
+            app:scale_top="270"
+            app:scale_width="900" />
+
+        <com.addisonelliott.segmentedbutton.SegmentedButtonGroup
+            android:id="@+id/btnGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            android:elevation="2dp"
+            android:background="#ffffff"
+            app:borderColor="#203E6B"
+            app:borderWidth="1dp"
+            app:dividerPadding="10dp"
+            app:dividerWidth="1dp"
+            app:position="0"
+            app:radius="30dp"
+            app:ripple="true"
+            app:rippleColor="#c3c3c3"
+            app:selectedBackground="#203E6B"
+            app:scale_height="150"
+            app:scale_left="220"
+            app:scale_top="550"
+            app:scale_width="1000">
+
+            <com.addisonelliott.segmentedbutton.SegmentedButton
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:fontFamily="@font/aniron"
+                android:padding="10dp"
+                app:drawableGravity="top"
+                app:selectedTextColor="#ffffff"
+                app:text="오늘"
+                app:textColor="#000000" />
+
+            <com.addisonelliott.segmentedbutton.SegmentedButton
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:fontFamily="@font/aniron"
+                app:drawableGravity="top"
+                app:selectedTextColor="#c3c3c3"
+                app:text="일주일"
+                app:textColor="#000000" />
+
+            <com.addisonelliott.segmentedbutton.SegmentedButton
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:padding="10dp"
+                app:drawableGravity="top"
+                app:selectedTextColor="#c3c3c3"
+                app:text="한달"
+                app:textColor="#000000" />
+        </com.addisonelliott.segmentedbutton.SegmentedButtonGroup>
+
+
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:scale_height="400"
+            app:scale_left="60"
+            app:scale_top="900"
+            app:scale_width="400"
+            app:srcCompat="@drawable/ic_svg_left_monitor_02" />
+
+        <TextView
+            android:id="@+id/txt_posit_01"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="0%"
+            android:textColor="#3c3c3c"
+            app:scale_height="150"
+            app:scale_left="60"
+            app:scale_textsize="80"
+            app:scale_top="1300"
+            app:scale_width="400" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:scale_height="400"
+            app:scale_left="520"
+            app:scale_top="900"
+            app:scale_width="400"
+            app:srcCompat="@drawable/ic_svg_left_monitor_03" />
+
+        <TextView
+            android:id="@+id/txt_posit_02"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="0%"
+            android:textColor="#3c3c3c"
+            app:scale_height="150"
+            app:scale_left="520"
+            app:scale_textsize="80"
+            app:scale_top="1300"
+            app:scale_width="400" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:scale_height="400"
+            app:scale_left="980"
+            app:scale_top="900"
+            app:scale_width="400"
+            app:srcCompat="@drawable/ic_svg_left_monitor_01" />
+
+        <TextView
+            android:id="@+id/txt_posit_03"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="0%"
+            android:textColor="#3c3c3c"
+            app:scale_height="150"
+            app:scale_left="980"
+            app:scale_textsize="80"
+            app:scale_top="1300"
+            app:scale_width="400" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:scale_height="400"
+            app:scale_left="60"
+            app:scale_top="1560"
+            app:scale_width="400"
+            app:srcCompat="@drawable/ic_svg_right_monitor_02" />
+
+        <TextView
+            android:id="@+id/txt_posit_04"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="0%"
+            android:textColor="#3c3c3c"
+            app:scale_height="150"
+            app:scale_left="60"
+            app:scale_textsize="80"
+            app:scale_top="1960"
+            app:scale_width="400" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:scale_height="400"
+            app:scale_left="520"
+            app:scale_top="1560"
+            app:scale_width="400"
+            app:srcCompat="@drawable/ic_svg_right_monitor_01" />
+
+        <TextView
+            android:id="@+id/txt_posit_05"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="0%"
+            android:textColor="#3c3c3c"
+            app:scale_height="150"
+            app:scale_left="520"
+            app:scale_textsize="80"
+            app:scale_top="1960"
+            app:scale_width="400" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:scale_height="400"
+            app:scale_left="980"
+            app:scale_top="1560"
+            app:scale_width="400"
+            app:srcCompat="@drawable/ic_svg_right_monitor_03" />
+
+        <TextView
+
+            android:id="@+id/txt_posit_06"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="0%"
+            android:textColor="#3c3c3c"
+            app:scale_height="150"
+            app:scale_left="980"
+            app:scale_textsize="80"
+            app:scale_top="1960"
+            app:scale_width="400" />
+
+    </com.example.COP.Utils.ScalableLayout>
+</LinearLayout>

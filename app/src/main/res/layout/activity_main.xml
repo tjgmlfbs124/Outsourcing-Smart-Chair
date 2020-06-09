@@ -46,13 +46,16 @@
             app:srcCompat="@drawable/ic_svg_setting"/>
 
         <LinearLayout
+            android:id="@+id/layout_left_monitor"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:orientation="horizontal"
             app:scale_height="643"
             app:scale_left="60"
             app:scale_top="400"
             app:scale_width="643"
-            android:background="@drawable/menu_background_white"/>
+            android:background="@drawable/menu_background_white"
+            android:onClick="layoutClick"/>
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/svg_left_monitor"
@@ -62,16 +65,20 @@
             app:scale_height="480"
             app:scale_left="189"
             app:scale_top="478"
-            app:scale_width="350"/>
+            app:scale_width="350"
+            android:onClick="layoutClick"/>
 
         <LinearLayout
+            android:id="@+id/layout_right_monitor"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:orientation="horizontal"
             app:scale_height="643"
             app:scale_left="744"
             app:scale_top="400"
             app:scale_width="643"
-            android:background="@drawable/menu_background_white"/>
+            android:background="@drawable/menu_background_white"
+            android:onClick="layoutClick"/>
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/svg_right_monitor"
@@ -81,7 +88,8 @@
             app:scale_height="480"
             app:scale_left="900"
             app:scale_top="478"
-            app:scale_width="350"/>
+            app:scale_width="350"
+            android:onClick="layoutClick"/>
 
         <TextView
             android:id="@+id/btn_start"
@@ -150,7 +158,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:progress_text_color="#203E6B"
-            app:progress_text_size="80px"
+            app:progress_text_size="70px"
             app:progress_stroke_width="10dp"
             app:style="solid_line"
             app:progress_start_degree="-90"
@@ -162,14 +170,15 @@
             app:scale_height="410"
             app:scale_left="234"
             app:scale_top="1525"
-            app:scale_width="410"/>
+            app:scale_width="410"
+            android:onClick="layoutClick"/>
 
         <com.dinuscxj.progressbar.CircleProgressBar
             android:id="@+id/circleProgress_02"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:progress_text_color="#203E6B"
-            app:progress_text_size="80px"
+            app:progress_text_size="70px"
             app:progress_stroke_width="10dp"
             app:style="solid_line"
             app:progress_start_degree="-90"
@@ -181,14 +190,15 @@
             app:scale_height="410"
             app:scale_left="790"
             app:scale_top="1525"
-            app:scale_width="410"/>
+            app:scale_width="410"
+            android:onClick="layoutClick"/>
 
         <com.dinuscxj.progressbar.CircleProgressBar
             android:id="@+id/circleProgress_03"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:progress_text_color="#203E6B"
-            app:progress_text_size="80px"
+            app:progress_text_size="70px"
             app:progress_stroke_width="10dp"
             app:style="solid_line"
             app:progress_start_degree="-90"
@@ -200,14 +210,15 @@
             app:scale_height="410"
             app:scale_left="234"
             app:scale_top="1988"
-            app:scale_width="410" />
+            app:scale_width="410"
+            android:onClick="layoutClick"/>
 
         <com.dinuscxj.progressbar.CircleProgressBar
             android:id="@+id/circleProgress_04"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:progress_text_color="#203E6B"
-            app:progress_text_size="80px"
+            app:progress_text_size="70px"
             app:progress_stroke_width="10dp"
             app:style="solid_line"
             app:progress_start_degree="-90"
@@ -219,7 +230,8 @@
             app:scale_height="410"
             app:scale_left="790"
             app:scale_top="1988"
-            app:scale_width="410" />
+            app:scale_width="410"
+            android:onClick="layoutClick" />
 
     </com.example.COP.Utils.ScalableLayout>
 
