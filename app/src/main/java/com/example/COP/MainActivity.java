@@ -19,6 +19,7 @@ import android.icu.text.DecimalFormat;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.Handler;
 import android.os.IBinder;
 import android.os.Vibrator;
 import android.text.InputType;
@@ -111,6 +112,9 @@ public class MainActivity extends AppCompatActivity {
     private Integer alertTime = 5; // 시간 설정
     static Vibrator vibrator; // 진동설정
 
+    private boolean resetAttempt = false;
+    private boolean isReset = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -161,6 +165,9 @@ public class MainActivity extends AppCompatActivity {
         bleProgress = (ProgressBar)findViewById(R.id.progressBar);
 
         circleProgress_01 = (CircleProgressBar)findViewById(R.id.circleProgress_01);
+        circleProgress_02 = (CircleProgressBar)findViewById(R.id.circleProgress_02);
+        circleProgress_03 = (CircleProgressBar)findViewById(R.id.circleProgress_03);
+        circleProgress_04 = (CircleProgressBar)findViewById(R.id.circleProgress_04);
 
         vibrator = (Vibrator)getSystemService(Context.VIBRATOR_SERVICE);
 
@@ -508,8 +515,13 @@ public class MainActivity extends AppCompatActivity {
                             @Override
                             public void onFinish() {
                                 mBluetoothBridge.mConnectionSuccess = true;
-                                bleStateImageChange();
-                                Log.d("@ckw", "onFinish!");
+                                //bleStateImageChange();
+                                Log.d("@ckw", "onFinish!"); //@ckw
+
+                                if(mBluetoothBridge.mService.isConnected()) {
+                                    mBluetoothBridge.mService.sendCommand(0x53, null); // @ckw 데이터 송신 요청!
+                                }
+
                             }
                         }.start();
 
@@ -533,7 +545,7 @@ public class MainActivity extends AppCompatActivity {
                         //mTextViewConInt.setText("-");
                         //mConnectionProgDialog.hide();
                         Log.d(TAG, "UART_DISCONNECT_MSG");
-                        bleStateImageChange();
+                        //bleStateImageChange();
                     }
                 });
             }
@@ -555,9 +567,10 @@ public class MainActivity extends AppCompatActivity {
                 double xy = 0;
                 double COPx = 0;
                 double COPy = 0;
+
                 final byte[] txValue = intent.getByteArrayExtra(BleDataTransferService.EXTRA_DATA);
 
-                Log.d("@ckw","Ble Data:"+Arrays.toString(txValue)); //@ckw
+                //Log.d("@ckw","Ble Data:"+Arrays.toString(txValue)); //@ckw
 
                 if (txValue.length == 16) {
 
@@ -586,25 +599,88 @@ public class MainActivity extends AppCompatActivity {
 
                     DecimalFormat decimalFormat = new DecimalFormat("#0.0000");
                     String str = decimalFormat.format(raw_LC1);
-                    tvLC_7.setText(str+" mV");
+                    //tvLC_7.setText(str+" mV");
+                    //Log.d("@ckw", "1:"+str); // 왼쪽 아래
 
                     str = decimalFormat.format(raw_LC2);
-                    tvLC_5.setText(str+" mV");
+                    //tvLC_5.setText(str+" mV");
+                    //Log.d("@ckw", "2:"+str); // 오른쪽 아래
 
                     str = decimalFormat.format(raw_LC3);
-                    tvLC_11.setText(str+" mV");
+                    //tvLC_11.setText(str+" mV");
+                    //Log.d("@ckw", "3:"+str); // 왼쪽 위
 
                     str = decimalFormat.format(raw_LC4);
-                    tvLC_1.setText(str+" mV");
+                    //tvLC_1.setText(str+" mV");
+                    //Log.d("@ckw", "4:"+str); // 오른쪽 위
 
+                    //Log.d("@ckw", "1:"+Integer.toString((int)(Math.abs(raw_LC1)*10)) );
 
+                    double LF = (Math.abs(raw_LC3)*100);
+                    double RF = (Math.abs(raw_LC4)*100);
+                    double LB = (Math.abs(raw_LC1)*100);
+                    double RB = (Math.abs(raw_LC2)*100);
 
+                    double wholeValue = LF+RF+LB+RB;
+
+                    int LF_percent = (int)((LF/wholeValue)*100);
+                    int RF_percent = (int)((RF/wholeValue)*100);
+                    int LB_percent = (int)((LB/wholeValue)*100);
+                    int RB_percent = (int)((RB/wholeValue)*100);
+
+                    Log.d("@ckw", "whole value:"+Double.toString(wholeValue));
+                    if(isReset && wholeValue > 30) { // 최소 데이터 크기 30 필요
+                        circleProgress_01.setProgress( LF_percent );
+                        circleProgress_02.setProgress( RF_percent );
+                        circleProgress_03.setProgress( LB_percent );
+                        circleProgress_04.setProgress( RB_percent );
+
+                        if( LF_percent+RF_percent >= 65 ) {
+                            // 앞으로 기울어짐
+                            left_monitor.setImageResource(R.drawable.ic_svg_left_monitor_02);
+                        } else if (LF_percent+RF_percent < 35) {
+                            // 뒤로 기울어짐
+                            left_monitor.setImageResource(R.drawable.ic_svg_left_monitor_01);
+                        } else {
+                            // 정자세
+                            left_monitor.setImageResource(R.drawable.ic_svg_left_monitor_03);
+                        }
+
+                        if( RF_percent + RB_percent >= 65 ) {
+                            // 오른쪽으로 기울어짐
+                            right_monitor.setImageResource(R.drawable.ic_svg_right_monitor_03);
+                        } else if (RF_percent + RB_percent < 35
+                        ) {
+                            // 왼쪽으로 기울어짐
+                            right_monitor.setImageResource(R.drawable.ic_svg_right_monitor_02);
+                        } else {
+                            // 정자세
+                            right_monitor.setImageResource(R.drawable.ic_svg_right_monitor_01);
+                        }
+                    } else {
+                        circleProgress_01.setProgress( 0 );
+                        circleProgress_02.setProgress( 0 );
+                        circleProgress_03.setProgress( 0 );
+                        circleProgress_04.setProgress( 0 );
+
+                        left_monitor.setImageResource(R.drawable.ic_svg_left_monitor_03);
+                        right_monitor.setImageResource(R.drawable.ic_svg_right_monitor_01);
+                    }
 
 
                     oo = Math.abs(raw_LC3);
                     xo = Math.abs(raw_LC4);
                     oy = Math.abs(raw_LC1);
                     xy = Math.abs(raw_LC2);
+                    //Log.d("@ckw", "1:"+oo); // 왼쪽 위 ( - 연산 )
+                    // default: 3.6 // 1.5,1.5,2.0
+                    //Log.d("@ckw", "2:"+xo); // 오른쪽 위 ( + 연산 )
+                    // default: 1.3 // 6.0,7.0,7.2
+                    //Log.d("@ckw", "3:"+oy); // 왼쪽 아래 ( - 연산 )
+                    // default: 4.5 // 1.0,0.9,1.2
+                    //Log.d("@ckw", "4:"+xy); // 오른쪽 아래 ( + 연산 )
+                    // default: 2.3 // 8.0,8.0
+
 
                     Fz = oo + xo + oy + xy;
 
@@ -612,19 +688,46 @@ public class MainActivity extends AppCompatActivity {
                     COPy = ( 1 + ((oy +xy) - (oo + xo))/Fz ) * 650 / 2;
 
                     str = decimalFormat.format(COPx);
-                    tvCOPX.setText(str);
-                    str = decimalFormat.format(COPy);
-                    tvCOPY.setText(str);
+                    //tvCOPX.setText(str);
+                    //Log.d("@ckw", "dataX:"+str);
 
-                    if(Fz < 0.5){
+                    str = decimalFormat.format(COPy);
+                    //tvCOPY.setText(str);
+                    //Log.d("@ckw","dataY:"+str);
+
+
+                    /*if(Fz < 0.5){
                         IVCIR.setVisibility(View.INVISIBLE);
                     }else{
                         IVCIR.setVisibility(View.VISIBLE);
+                    }*/
+
+                    //IVCIR.setX((float)COPx+off_x);
+                    //IVCIR.setY((float)COPy+off_y);
+                    //float dataX = (float)COPx+off_x; //@ckw
+                    //float dataY = (float)COPy+off_y;
+                    //Log.d("@ckw", "x"+Float.toString(dataX));
+                    //Log.d("@ckw", "y"+Float.toString(dataY));
+
+                    if(!resetAttempt) { // 최초 초기화
+                        resetAttempt = true;
+                        Handler delayHandler = new Handler();
+                        delayHandler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                isReset= true;
+                                Log.d("@ckw", "sitting data RESET!!");
+
+                                pre_LC_1  = LC_1;
+                                pre_LC_2  = LC_2;
+                                pre_LC_3  = LC_3;
+                                pre_LC_4  = LC_4;
+
+                                pre_LC_5  = LC_5;
+                                pre_LC_6  = LC_6;
+                            }
+                        }, 500);
                     }
-
-                    IVCIR.setX((float)COPx+off_x);
-                    IVCIR.setY((float)COPy+off_y);
-
                 }
 
                 if (txValue.length == 8) {
@@ -643,11 +746,12 @@ public class MainActivity extends AppCompatActivity {
 
                     DecimalFormat decimalFormat = new DecimalFormat("#0.0000");
                     String str = decimalFormat.format(raw_LC5);
-                    tvLC_2_11.setText(str+" mV");
+                    //tvLC_2_11.setText(str+" mV");
 
                     str = decimalFormat.format(raw_LC6);
-                    tvLC_2_1.setText(str+" mV");
+                    //tvLC_2_1.setText(str+" mV");
                 }
+
             }
 
             //*********************//
@@ -663,7 +767,6 @@ public class MainActivity extends AppCompatActivity {
                 String str = decimalFormat.format(Battery);
 
                 TextBat.setText("Battery " + str + " V");
-                Log.d("@ckw", "hello");
             }
             //*********************//
             if (action.equals(BleDataTransferService.DEVICE_DOES_NOT_SUPPORT_IMAGE_TRANSFER)){

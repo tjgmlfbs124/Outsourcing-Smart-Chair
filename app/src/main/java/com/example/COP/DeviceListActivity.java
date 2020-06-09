@@ -216,6 +216,14 @@ public class DeviceListActivity extends Activity {
                     Log.i("@ckw", "Device Matching");
                     mBluetoothLeScanner.stopScan(mScanCallback);
                     addDevice(result.getDevice(), result.getRssi(), result.getScanRecord().getBytes(), 0);
+
+                    Bundle b = new Bundle();
+                    b.putString(BluetoothDevice.EXTRA_DEVICE, result.getDevice().getAddress());
+
+                    Intent mResult = new Intent();
+                    mResult.putExtras(b);
+                    setResult(Activity.RESULT_OK, mResult);
+                    finish();
                 }
             }
 
