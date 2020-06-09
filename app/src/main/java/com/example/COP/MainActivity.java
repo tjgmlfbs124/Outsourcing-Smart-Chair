@@ -234,6 +234,17 @@ public class MainActivity extends AppCompatActivity {
     /**
      * @ckw 이벤트 처리
      */
+    private class StopwatchListener implements Stopwatch.StopWatchListener{
+        @Override
+        public void onTick(String time) {
+            /**
+             * @param
+             *  time : 00:00:00으로 들어옴
+             */
+            Log.d("@ckw", time);
+            btn_start.setText(time);
+        }
+    }
 
     private class ButtonClickListener implements View.OnClickListener{
         @Override
@@ -244,13 +255,22 @@ public class MainActivity extends AppCompatActivity {
                     showTimeEditDialog();
                     break;
                 case R.id.txt_alram :
-                    // 설정창 이동할것
                     break;
                 case R.id.btn_start :
                 case R.id.btn_ble :
                     Log.d("@ckw", "btn ble Click");
 
-                    bleSwitch();
+                    if(!isReset) { bleSwitch(); }
+                    else {
+                        if(!stopWatch.isRunning()) {
+                            Log.d("@ckw", "stopwatch! start!");
+                            stopWatch.setListener(new StopwatchListener());
+                            stopWatch.start();
+                        }
+                        else {
+                            stopWatch.stop();
+                        }
+                    }
 
                     /**
                      * 처음 눌렀을때 : 해야할일
@@ -342,6 +362,8 @@ public class MainActivity extends AppCompatActivity {
         // 3-1 연결 성공
         // 3-2 연결 실패
     }
+
+
 
     /** @ckw 블루투스 세팅
      * */
@@ -628,17 +650,17 @@ public class MainActivity extends AppCompatActivity {
                     int LB_percent = (int)((LB/wholeValue)*100);
                     int RB_percent = (int)((RB/wholeValue)*100);
 
-                    Log.d("@ckw", "whole value:"+Double.toString(wholeValue));
+                    //Log.d("@ckw", "whole value:"+Double.toString(wholeValue));
                     if(isReset && wholeValue > 30) { // 최소 데이터 크기 30 필요
                         circleProgress_01.setProgress( LF_percent );
                         circleProgress_02.setProgress( RF_percent );
                         circleProgress_03.setProgress( LB_percent );
                         circleProgress_04.setProgress( RB_percent );
 
-                        if( LF_percent+RF_percent >= 65 ) {
+                        if( LF_percent+RF_percent >= 60 ) {
                             // 앞으로 기울어짐
                             left_monitor.setImageResource(R.drawable.ic_svg_left_monitor_02);
-                        } else if (LF_percent+RF_percent < 35) {
+                        } else if (LF_percent+RF_percent < 40) {
                             // 뒤로 기울어짐
                             left_monitor.setImageResource(R.drawable.ic_svg_left_monitor_01);
                         } else {
@@ -646,11 +668,10 @@ public class MainActivity extends AppCompatActivity {
                             left_monitor.setImageResource(R.drawable.ic_svg_left_monitor_03);
                         }
 
-                        if( RF_percent + RB_percent >= 65 ) {
+                        if( RF_percent + RB_percent >= 60 ) {
                             // 오른쪽으로 기울어짐
                             right_monitor.setImageResource(R.drawable.ic_svg_right_monitor_03);
-                        } else if (RF_percent + RB_percent < 35
-                        ) {
+                        } else if (RF_percent + RB_percent < 40) {
                             // 왼쪽으로 기울어짐
                             right_monitor.setImageResource(R.drawable.ic_svg_right_monitor_02);
                         } else {
@@ -716,6 +737,9 @@ public class MainActivity extends AppCompatActivity {
                             @Override
                             public void run() {
                                 isReset= true;
+                                btn_ble.setVisibility(View.GONE);
+                                btn_start.setText("START");
+                                vibrator.vibrate(1000); // 진동 설정
                                 Log.d("@ckw", "sitting data RESET!!");
 
                                 pre_LC_1  = LC_1;
