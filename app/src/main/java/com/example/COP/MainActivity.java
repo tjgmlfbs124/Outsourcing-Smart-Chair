@@ -85,17 +85,11 @@ public class MainActivity extends AppCompatActivity {
     TextView tvCOPX;
     TextView tvCOPY;
 
-
-
     private float ph_offset = 0.0f;
     private float ph_slope = 59.16f;
     private final float PH_ADC_LSB_RESOLUTION = 0.188f;
-
     private boolean mPhysionicsPermissionsGranted = false;
-
-
     private BluetoothBridge mBluetoothBridge = BluetoothBridge.getInstance();
-
 
     /**
      * @ckw 객체 선언
@@ -246,7 +240,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private class ButtonClickListener implements View.OnClickListener{
+    public class ButtonClickListener implements View.OnClickListener{
         @Override
         public void onClick(View view) {
             switch (view.getId()){
@@ -271,7 +265,6 @@ public class MainActivity extends AppCompatActivity {
                             stopWatch.stop();
                         }
                     }
-
                     /**
                      * 처음 눌렀을때 : 해야할일
                      *  1. 블루투스 연결 -> 성공시 -> btn_ble.setVisible(View.GONE); (BLE 이미지 없앰) -> btn_start.setText("START");
@@ -282,6 +275,15 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
+
+    public void layoutClick(View view){
+        Intent intent = new Intent(MainActivity.this, LogActivity.class);
+        startActivity(intent);
+    }
+
+
+
+
 
     /**
      * @ckw 알람
