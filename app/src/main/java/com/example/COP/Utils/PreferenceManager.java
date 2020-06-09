@@ -10,14 +10,6 @@ import org.json.JSONObject;
 /** PreferenceManager Class
  * 앱 내부에 저장할 데이터를 자료형에 따라 함수로 만들어져있음.
  * 키값과 데이터를 저장한다.
- * PreferenceManager 통해 저장된 값은, 코드로 지우거나, 앱을 지우지 않는이상 없어지지 않는다.
- * 승,하차 내역 및 유저 정보를 저장하는데 사용하는중이다.
- *
- * beaconData라는 키값으로 통칭하는 방 하나가 있고,
- * 그 방 안에 여러개의 키값으로 데이터를 저장중.
- *
- * 여러개의 키 종류
- *  - payLog : 승하차 정보를 처리하는 키값
  *
  */
 public class PreferenceManager {
@@ -32,21 +24,6 @@ public class PreferenceManager {
         return context.getSharedPreferences(PREFERENCES_NAME, Context.MODE_PRIVATE);
     }
 
-    /**
-     * setJsonArray (): 승하차에 대한 정보(Json Object)를 리스트로 저장
-     * @param context : 호출하는 Context
-     * @param key     : 저장할 key 값
-     * @param object  : Json Object ( ex object : {
-     *                                      'state' : '승차',
-     *                                      'beaconName' : 'MiniBeacon_123456',
-     *                                      'date' : '20-02-11 14:00'
-     *                                  })
-     *
-     *  추가설명 : 오브젝트 단위의 배열을 앱 내부에 저장하기에 가장 좋은방법은 Json을 이용하는것입니다.
-     *                다만, 앱내부에 저장할때 json클래스를 지원하지 않기때문에,
-     *                json의 내용을 String으로 풀어서 저장한다음, ( setJsonArray )
-     *                꺼내 쓸때는 String 형의 데이터를 json화 시켜서 다시 사용합니다. ( getJsonArray )
-     */
     public static void setJsonArray(Context context, String key, JSONObject object){
         JSONArray jsonArray;
         try{
@@ -65,10 +42,6 @@ public class PreferenceManager {
         }
     }
 
-
-    /**
-     * getJsonArray (): 승,하차에 대한 정보(Json Array)를 리턴한다.
-     */
     public static JSONArray getJsonArray(Context context, String key){
         SharedPreferences prefs = getPreferences(context);
         String logList = prefs.getString(key, DEFAULT_VALUE_STRING);

@@ -103,11 +103,18 @@ public class MainActivity extends AppCompatActivity {
 
     private PendingIntent pendingIntent;
 
-    private Integer alertTime = 5; // 시간 설정
+    private Integer alertTime = 3; // 시간 설정
     static Vibrator vibrator; // 진동설정
 
     private boolean resetAttempt = false;
     private boolean isReset = false;
+
+    private boolean verticalPosition;
+    private boolean horizontalPosition;
+
+    private Handler mHandler;
+    private Runnable mRuannble;
+    private boolean handlerStarted;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -167,6 +174,16 @@ public class MainActivity extends AppCompatActivity {
 
         btn_start.setOnClickListener(new ButtonClickListener());
         btn_set.setOnClickListener(new ButtonClickListener());
+
+        mHandler = new Handler();
+        mRuannble = new Runnable() {
+
+            @Override
+            public void run() {
+                showAlertDialog();
+            }
+        };
+        handlerStarted = false;
 
         // 블루투스 초기화
         bluetoothDevicePairingInit();
@@ -235,7 +252,7 @@ public class MainActivity extends AppCompatActivity {
              * @param
              *  time : 00:00:00으로 들어옴
              */
-            Log.d("@ckw", time);
+            //Log.d("@ckw", time);
             btn_start.setText(time);
         }
     }
@@ -331,7 +348,7 @@ public class MainActivity extends AppCompatActivity {
         editText.setInputType(InputType.TYPE_CLASS_NUMBER);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("시간을 설정해 주세요. (분)");
+        builder.setTitle("시간을 설정해 주세요. (초)");
 
         builder.setView(editText);
         builder.setPositiveButton("입력",
@@ -339,7 +356,7 @@ public class MainActivity extends AppCompatActivity {
                 public void onClick(DialogInterface dialog, int which) {
                     alertTime = Integer.parseInt(editText.getText().toString());
                     //Toast.makeText(getApplicationContext(),editText.getText().toString()+"분 설정" ,Toast.LENGTH_LONG).show();
-                    Toast.makeText(getApplicationContext(),alertTime.toString()+"분 설정" ,Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(),alertTime.toString()+"초 설정" ,Toast.LENGTH_LONG).show();
                 }
             });
         builder.setNegativeButton("취소",
@@ -357,12 +374,6 @@ public class MainActivity extends AppCompatActivity {
      * */
     private void bleSwitch() {
         bleConnectionAttempt();
-        // 1연결 시도
-        // 2-1 연결 시도 성공 (연결중)
-        // 2-2 연결 시도 실패
-
-        // 3-1 연결 성공
-        // 3-2 연결 실패
     }
 
 
@@ -659,28 +670,49 @@ public class MainActivity extends AppCompatActivity {
                         circleProgress_03.setProgress( LB_percent );
                         circleProgress_04.setProgress( RB_percent );
 
+                        //boolean tempBool = false;
                         if( LF_percent+RF_percent >= 60 ) {
                             // 앞으로 기울어짐
                             left_monitor.setImageResource(R.drawable.ic_svg_left_monitor_02);
+                            verticalPosition = false;
                         } else if (LF_percent+RF_percent < 40) {
                             // 뒤로 기울어짐
                             left_monitor.setImageResource(R.drawable.ic_svg_left_monitor_01);
+                            verticalPosition = false;
                         } else {
                             // 정자세
                             left_monitor.setImageResource(R.drawable.ic_svg_left_monitor_03);
+                            verticalPosition = true;
                         }
+
 
                         if( RF_percent + RB_percent >= 60 ) {
                             // 오른쪽으로 기울어짐
                             right_monitor.setImageResource(R.drawable.ic_svg_right_monitor_03);
+                            horizontalPosition = false;
                         } else if (RF_percent + RB_percent < 40) {
                             // 왼쪽으로 기울어짐
                             right_monitor.setImageResource(R.drawable.ic_svg_right_monitor_02);
+                            horizontalPosition = false;
                         } else {
                             // 정자세
                             right_monitor.setImageResource(R.drawable.ic_svg_right_monitor_01);
+                            horizontalPosition = true;
+
                         }
-                    } else {
+
+                        if(!verticalPosition || !horizontalPosition) {
+                            if(!handlerStarted) {
+                                handlerStarted = true;
+                                mHandler.postDelayed(mRuannble, alertTime*1000);
+                            }
+                        } else {
+                            if(handlerStarted) {
+                                handlerStarted = false;
+                                mHandler.removeCallbacks(mRuannble);
+                            }
+                        }
+                    } else { // 입력값이 작을 떄
                         circleProgress_01.setProgress( 0 );
                         circleProgress_02.setProgress( 0 );
                         circleProgress_03.setProgress( 0 );
@@ -688,6 +720,11 @@ public class MainActivity extends AppCompatActivity {
 
                         left_monitor.setImageResource(R.drawable.ic_svg_left_monitor_03);
                         right_monitor.setImageResource(R.drawable.ic_svg_right_monitor_01);
+
+                        if(handlerStarted) {
+                            handlerStarted = false;
+                            mHandler.removeCallbacks(mRuannble);
+                        }
                     }
 
 
@@ -695,13 +732,13 @@ public class MainActivity extends AppCompatActivity {
                     xo = Math.abs(raw_LC4);
                     oy = Math.abs(raw_LC1);
                     xy = Math.abs(raw_LC2);
-                    //Log.d("@ckw", "1:"+oo); // 왼쪽 위 ( - 연산 )
+                    //Log.d("@", "1:"+oo); // 왼쪽 위 ( - 연산 )
                     // default: 3.6 // 1.5,1.5,2.0
-                    //Log.d("@ckw", "2:"+xo); // 오른쪽 위 ( + 연산 )
+                    //Log.d("@", "2:"+xo); // 오른쪽 위 ( + 연산 )
                     // default: 1.3 // 6.0,7.0,7.2
-                    //Log.d("@ckw", "3:"+oy); // 왼쪽 아래 ( - 연산 )
+                    //Log.d("@", "3:"+oy); // 왼쪽 아래 ( - 연산 )
                     // default: 4.5 // 1.0,0.9,1.2
-                    //Log.d("@ckw", "4:"+xy); // 오른쪽 아래 ( + 연산 )
+                    //Log.d("@", "4:"+xy); // 오른쪽 아래 ( + 연산 )
                     // default: 2.3 // 8.0,8.0
 
 
@@ -712,11 +749,9 @@ public class MainActivity extends AppCompatActivity {
 
                     str = decimalFormat.format(COPx);
                     //tvCOPX.setText(str);
-                    //Log.d("@ckw", "dataX:"+str);
 
                     str = decimalFormat.format(COPy);
                     //tvCOPY.setText(str);
-                    //Log.d("@ckw","dataY:"+str);
 
 
                     /*if(Fz < 0.5){
