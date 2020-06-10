@@ -41,6 +41,7 @@ import androidx.core.content.ContextCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.dinuscxj.progressbar.CircleProgressBar;
+import com.example.COP.Utils.PreferenceManager;
 import com.example.COP.Utils.Stopwatch;
 
 import org.json.JSONException;
@@ -220,8 +221,8 @@ public class MainActivity extends AppCompatActivity {
                         //obj.put("verPos", 1); // -1:앞/0:센터/1:뒤
                         //obj.put("horPos", -1); // -1:왼/0:센터/1:우
 
-                        //PreferenceManager.setJsonArray(getApplicationContext(),"TEST", obj);
-                        Log.d("@ckw", "save...");
+                        PreferenceManager.setJsonArray(getApplicationContext(),"sitting_position", obj);
+                        Log.d("@ckw", "save..."+obj.toString());
                     } catch (JSONException e) {
                         Log.e("@ckw", e.getMessage() );
                     }
@@ -322,6 +323,30 @@ public class MainActivity extends AppCompatActivity {
                             Log.d("@ckw", "stopwatch! start!");
                             stopWatch.setListener(new StopwatchListener());
                             stopWatch.start();
+
+                            /*
+                            for(int i=0; i<10; i++) {
+                                try {
+                                    Calendar calendar = Calendar.getInstance();
+                                    calendar.add(Calendar.DAY_OF_YEAR, -15);
+                                    long date2 = calendar.getTimeInMillis();
+                                    Log.d("@ckw", Long.toString(date2));
+
+                                    JSONObject obj = new JSONObject();
+                                    obj.put("date", date2);
+                                    double temp = Math.random()*3;
+                                    int tempI = 1;//(int)temp-1;
+                                    obj.put("verPos", tempI);
+                                    temp = Math.random()*3;
+                                    tempI = 1;//(int)temp-1;
+                                    obj.put("horPos", tempI);
+                                    PreferenceManager.setJsonArray(getApplicationContext(),"sitting_position", obj);
+                                    Log.d("@ckw", "save.!"+obj.toString());
+                                } catch ( JSONException e) {
+                                    Log.d("@ckw", e.getMessage());
+                                }
+                            }*/
+
                         }
                         else {
                             stopWatch.stop();
