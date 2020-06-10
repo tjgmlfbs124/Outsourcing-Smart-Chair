@@ -143,7 +143,7 @@ public class LogActivity extends AppCompatActivity {
                 dataLength++;
 
             }
-            Log.d("@ckw", result);
+            //Log.d("@ckw", result);
         } catch (JSONException e) {
             Log.d("@ckw", e.getMessage());
         }

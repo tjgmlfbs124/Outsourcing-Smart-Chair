@@ -111,7 +111,7 @@ public class MainActivity extends AppCompatActivity {
 
     private PendingIntent pendingIntent;
 
-    private Integer alertTime = 3; // 시간 설정
+    private Integer alertTime = 20; // 시간 설정
     static Vibrator vibrator; // 진동설정
 
     private boolean resetAttempt = false;
@@ -205,18 +205,23 @@ public class MainActivity extends AppCompatActivity {
             public void run() {
                 if(wholeValue > PRESSURE_STANDARD) {
                     // 의미있는 데이터
+                    txt_alram.setText("자세를 측정중 입니다.");
                     try {
                         JSONObject obj = new JSONObject();
                         obj.put("date", System.currentTimeMillis());
                         Integer temp = 0;
-                        if(verticalPosPercent > VERTICAL_PERCENT_STANDARD) temp = -1;
-                        else if(verticalPosPercent <= 100-VERTICAL_PERCENT_STANDARD) temp = 1;
-                        else temp = 0;
+                        if(verticalPosPercent > VERTICAL_PERCENT_STANDARD) {
+                            temp = -1;
+                        } else if(verticalPosPercent <= 100-VERTICAL_PERCENT_STANDARD) {
+                            temp = 1;
+                        } else { temp = 0; }
                         obj.put("verPos", temp);
 
-                        if(horizontalPosPercent > HORIZONTAL_PERCENT_STANDARD) temp = 1;
-                        else if(horizontalPosPercent <= 100-VERTICAL_PERCENT_STANDARD) temp = -1;
-                        else temp = 0;
+                        if(horizontalPosPercent > HORIZONTAL_PERCENT_STANDARD) {
+                            temp = 1;
+                        } else if(horizontalPosPercent <= 100-VERTICAL_PERCENT_STANDARD) {
+                            temp = -1;
+                        } else { temp = 0; }
                         obj.put("horPos", temp);
                         //obj.put("verPos", 1); // -1:앞/0:센터/1:뒤
                         //obj.put("horPos", -1); // -1:왼/0:센터/1:우
@@ -226,6 +231,8 @@ public class MainActivity extends AppCompatActivity {
                     } catch (JSONException e) {
                         Log.e("@ckw", e.getMessage() );
                     }
+                } else {
+                    txt_alram.setText("앉아있지 않습니다.");
                 }
                 logHandler.postDelayed(this, 5000);
             }
@@ -316,6 +323,7 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.btn_start :
                 case R.id.btn_ble :
                     Log.d("@ckw", "btn ble Click");
+                    txt_alram.setText("초기화 중입니다.");
 
                     if(!isReset) { bleSwitch(); }
                     else {
@@ -902,6 +910,7 @@ public class MainActivity extends AppCompatActivity {
                                 pre_LC_6  = LC_6;
 
                                 logHandler.post(logRunnable);
+                                txt_alram.setText("이제 앉아주세요.");
                             }
                         }, 500);
 

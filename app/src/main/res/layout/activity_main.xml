@@ -149,7 +149,7 @@
             app:scale_top="1336"
             app:scale_width="1300"
             android:gravity="center"
-            android:text="올바른 자세를 유지중입니다."
+            android:text="연결해 주세요."
             app:scale_textsize="60"
             android:textColor="#203E6B"/>
 
