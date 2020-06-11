@@ -109,6 +109,14 @@
                 app:textColor="#000000" />
         </com.addisonelliott.segmentedbutton.SegmentedButtonGroup>
 
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:scale_height="1300"
+            app:scale_left="50"
+            app:scale_top="850"
+            app:scale_width="1340"
+            android:background="@drawable/menu_background_white"/>
 
 
         <androidx.appcompat.widget.AppCompatImageView

@@ -105,6 +105,7 @@ public class LogActivity extends AppCompatActivity {
             Calendar calendar = Calendar.getInstance();
             calendar.add(Calendar.DAY_OF_YEAR, -1*amount);
             Long tempL = calendar.getTimeInMillis();
+            if (jsonArrayData == null) return;
             String result = "";
             for (int i = 0; i < jsonArrayData.length(); i++) {
                 JSONObject tempObj = jsonArrayData.getJSONObject(i);
