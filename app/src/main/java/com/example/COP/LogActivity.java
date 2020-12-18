@@ -45,31 +45,6 @@ public class LogActivity extends AppCompatActivity {
         /* 일간 데이터 처리*/
         dataSet(1);
 
-        /*
-        Date date = new Date(System.currentTimeMillis());
-
-        Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.YEAR, -1);
-        Date date2 = calendar.getTime();
-
-        //Log.d("@ckw", Integer.toString(date.compareTo(date2)) );
-        Log.d("@ckw", "data:"+(String)DateFormat.format("yyMMdd-HHmmss", date));
-
-        Log.d("@ckw", "data2:"+(String)DateFormat.format("yyMMdd-HHmmss", date2));
-
-        Long curTime = (System.currentTimeMillis());
-        String now = "curT:"+(String)DateFormat.format("yyMMdd-HHmmss", curTime);
-        Log.d("@ckw", now);
-
-
-        try {
-            JSONObject obj = new JSONObject();
-            obj.put("date", System.currentTimeMillis());
-            obj.put("verPos", 1); // -1:앞/0:센터/1:뒤
-            obj.put("horPos", -1); // -1:왼/0:센터/1:우
-        } catch (JSONException e) {
-            Log.d("@ckw", e.getMessage());
-        }*/
     }
 
     class onChangeButtonGroup implements SegmentedButtonGroup.OnPositionChangedListener{

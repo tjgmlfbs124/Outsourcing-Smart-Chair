@@ -136,41 +136,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        /* btStart = findViewById(R.id.btn_start);
-        btStop = findViewById(R.id.btn_stop);
-        btCalibration = findViewById(R.id.btn_calibration);
-
-        TextBat = findViewById(R.id.tvBattery);
-
-        tvLC_11 = findViewById(R.id.tv_11);
-        tvLC_1 = findViewById(R.id.tv_1);
-        tvLC_7 = findViewById(R.id.tv_7);
-        tvLC_5 = findViewById(R.id.tv_5);
-
-        tvLC_2_11 = findViewById(R.id.tv_2_11);
-        tvLC_2_1 = findViewById(R.id.tv_2_1);
-
-        tvCOPX = findViewById(R.id.COPX);
-        tvCOPY = findViewById(R.id.COPY);
-
-        btReset = findViewById(R.id.btn_reset);
-
-        IVCIR = findViewById(R.id.ivCIR);
-        IVCIR.setX(0);
-        IVCIR.setY(0);
-        IVCIR.setVisibility(View.INVISIBLE); */
-
-
-/*
-        scatterEntries = new ArrayList<>();
-        scatterEntries.add(new BarEntry(2, 5));
-        scatterDataSet = new ScatterDataSet(scatterEntries, "");
-        scatterData = new ScatterData(scatterDataSet);
-        scatterChart.setData(scatterData);
-        scatterDataSet.setValueTextSize(0f);
-*/
-        /** @ckw 객체 초기화
-         * */
         left_monitor = (AppCompatImageView)findViewById(R.id.svg_left_monitor);
         right_monitor = (AppCompatImageView)findViewById(R.id.svg_right_monitor);
         btn_set = (AppCompatImageView)findViewById(R.id.btn_set);
@@ -223,13 +188,10 @@ public class MainActivity extends AppCompatActivity {
                             temp = -1;
                         } else { temp = 0; }
                         obj.put("horPos", temp);
-                        //obj.put("verPos", 1); // -1:앞/0:센터/1:뒤
-                        //obj.put("horPos", -1); // -1:왼/0:센터/1:우
 
                         PreferenceManager.setJsonArray(getApplicationContext(),"sitting_position", obj);
-                        Log.d("@ckw", "save..."+obj.toString());
                     } catch (JSONException e) {
-                        Log.e("@ckw", e.getMessage() );
+
                     }
                 } else {
                     txt_alram.setText("앉아있지 않습니다.");
@@ -241,71 +203,11 @@ public class MainActivity extends AppCompatActivity {
         // 블루투스 초기화
         bluetoothDevicePairingInit();
 
-        /*btn_start.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {  // START
-                Log.d("@ckw", "onClick");
-                if(mBluetoothBridge.mService.isConnected()) {
-                    mBluetoothBridge.mService.sendCommand(0x53, null);
-                }
-            }
-        });*/
-        /*btn_start.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {  // STOP
-                Log.d("@ckw", "stopClick");
-                if(mBluetoothBridge.mService.isConnected()) {
-                    mBluetoothBridge.mService.sendCommand(0x50, null);
-                }
-            }
-        });*/
-        /*btCalibration.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(mBluetoothBridge.mService.isConnected()) {
-                    mBluetoothBridge.mService.sendCommand(0x42, null);
-                }
-            }
-        });
-
-        btReset.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                pre_LC_1  = LC_1;
-                pre_LC_2  = LC_2;
-                pre_LC_3  = LC_3;
-                pre_LC_4  = LC_4;
-
-                pre_LC_5  = LC_5;
-                pre_LC_6  = LC_6;
-            }
-        });
-
-
-        bluetoothDevicePairingInit();
-
-        if(!checkPermissions()) {
-            Log.d(TAG, "onCreate: permission denied, require all permission");
-        }
-
-        //myChart.addNewEntry(mLineChartL, 1);
-        //myChart.addNewEntry(mLineChartL, 2);
-        //myChart.addNewEntry(mLineChartL, 3);
-
-        //mLineChartL.clearValues();*/
-
     }
-    /**
-     * @ckw 이벤트 처리
-     */
+
     private class StopwatchListener implements Stopwatch.StopWatchListener{
         @Override
         public void onTick(String time) {
-            /**
-             * @param
-             *  time : 00:00:00으로 들어옴
-             */
-            //Log.d("@ckw", time);
             btn_start.setText(time);
         }
     }
@@ -315,14 +217,12 @@ public class MainActivity extends AppCompatActivity {
         public void onClick(View view) {
             switch (view.getId()){
                 case R.id.btn_set :
-                    Log.d("@ckw", "option");
                     showTimeEditDialog();
                     break;
                 case R.id.txt_alram :
                     break;
                 case R.id.btn_start :
                 case R.id.btn_ble :
-                    Log.d("@ckw", "btn ble Click");
                     txt_alram.setText("초기화 중입니다.");
 
                     if(!isReset) { bleSwitch(); }
@@ -332,80 +232,11 @@ public class MainActivity extends AppCompatActivity {
                             stopWatch.setListener(new StopwatchListener());
                             stopWatch.start();
 
-                            /*
-                            for(int i=0; i<10; i++) {
-                                try {
-                                    Calendar calendar = Calendar.getInstance();
-                                    calendar.add(Calendar.DAY_OF_YEAR, -15);
-                                    long date2 = calendar.getTimeInMillis();
-                                    Log.d("@ckw", Long.toString(date2));
-
-                                    JSONObject obj = new JSONObject();
-                                    obj.put("date", date2);
-                                    double temp = Math.random()*3;
-                                    int tempI = 1;//(int)temp-1;
-                                    obj.put("verPos", tempI);
-                                    temp = Math.random()*3;
-                                    tempI = 1;//(int)temp-1;
-                                    obj.put("horPos", tempI);
-                                    PreferenceManager.setJsonArray(getApplicationContext(),"sitting_position", obj);
-                                    Log.d("@ckw", "save.!"+obj.toString());
-                                } catch ( JSONException e) {
-                                    Log.d("@ckw", e.getMessage());
-                                }
-                            }*/
-
                         }
                         else {
                             stopWatch.stop();
                         }
-
-                        /*try {
-                            JSONArray ja = PreferenceManager.getJsonArray(getApplicationContext(), "TEST");
-                            String result = "";
-                            for(int i=0; i < ja.length(); i++) {
-                                JSONObject tempObj = ja.getJSONObject(i);
-                                result += "\ndate:"+tempObj.getString("date")+", verPos:"+tempObj.getString("verPos")+", horPos:"+tempObj.getString("horPos");
-                            }
-                            Log.d("@ckw", result);
-                        } catch (JSONException e) {
-                            Log.d("@ckw", e.getMessage());
-                        }*/
-
-
-                        /*
-                        Date date = new Date(System.currentTimeMillis());
-
-                        Calendar calendar = Calendar.getInstance();
-                        calendar.add(Calendar.YEAR, -1);
-                        Date date2 = calendar.getTime();
-
-                        //Log.d("@ckw", Integer.toString(date.compareTo(date2)) );
-                        Log.d("@ckw", "data:"+(String)DateFormat.format("yyMMdd-HHmmss", date));
-
-                        Log.d("@ckw", "data2:"+(String)DateFormat.format("yyMMdd-HHmmss", date2));
-
-                        Long curTime = (System.currentTimeMillis());
-                        String now = "curT:"+(String)DateFormat.format("yyMMdd-HHmmss", curTime);
-                        Log.d("@ckw", now);
-
-
-                        try {
-                            JSONObject obj = new JSONObject();
-                            obj.put("date", System.currentTimeMillis());
-                            obj.put("verPos", 1); // -1:앞/0:센터/1:뒤
-                            obj.put("horPos", -1); // -1:왼/0:센터/1:우
-                        } catch (JSONException e) {
-                            Log.d("@ckw", e.getMessage());
-                        }*/
-
                     }
-                    /**
-                     * 처음 눌렀을때 : 해야할일
-                     *  1. 블루투스 연결 -> 성공시 -> btn_ble.setVisible(View.GONE); (BLE 이미지 없앰) -> btn_start.setText("START");
-                     * 연결 성공후 눌렀을때 :
-                     *  1. 스톱워치 작동 -> stopWatch.start(); or stopWatch.stop();
-                     */
                     break;
             }
         }
@@ -416,13 +247,6 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-
-
-
-
-    /**
-     * @ckw 알람
-     * */
     private void myAlarm() {
         Log.d("@ckw", "alarm set");
         Intent intent = new Intent(this, AlarmReceiver.class);
@@ -440,9 +264,6 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, MainActivity.class);
         alarmManager.cancel(pendingIntent);
     }
-
-    /** @ckw AlertDialog
-     * */
 
     // 잘못된 자세 알람
     private void showAlertDialog() {
@@ -474,7 +295,6 @@ public class MainActivity extends AppCompatActivity {
             new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int which) {
                     alertTime = Integer.parseInt(editText.getText().toString());
-                    //Toast.makeText(getApplicationContext(),editText.getText().toString()+"분 설정" ,Toast.LENGTH_LONG).show();
                     Toast.makeText(getApplicationContext(),alertTime.toString()+"초 설정" ,Toast.LENGTH_LONG).show();
                 }
             });
@@ -488,17 +308,9 @@ public class MainActivity extends AppCompatActivity {
         alertDialog.show();
     }
 
-    /**
-     *  @ckw 이벤트 설정
-     * */
     private void bleSwitch() {
         bleConnectionAttempt();
     }
-
-
-
-    /** @ckw 블루투스 세팅
-     * */
 
     private void bleConnectionAttempt() {
         if (!mBluetoothBridge.mBtAdapter.isEnabled()) {
@@ -512,18 +324,11 @@ public class MainActivity extends AppCompatActivity {
                     mBluetoothBridge.mService.disconnect();
                 }
             } else {
-                //Connect button pressed, open DeviceListActivity class, with popup windows that scan for devices
-
                 Intent newIntent = new Intent(MainActivity.this, DeviceListActivity.class);
-                //newIntent.putExtra("string",)
                 startActivityForResult(newIntent, mBluetoothBridge.REQUEST_SELECT_DEVICE);
             }
         }
     }
-
-    /**
-     * --------------------- Bluetooth Pairing -------------------------------
-     */
 
     private void bluetoothDevicePairingInit() {
 
@@ -535,32 +340,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
         ble_service_init();
-
-        //ivBt = findViewById(R.id.ivBt);
-
-        // Handler Disconnect & Connect button
-        /*ivBt.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!mBluetoothBridge.mBtAdapter.isEnabled()) {
-                    Log.i(TAG, "onClick - BT not enabled yet");
-                    Intent enableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-                    startActivityForResult(enableIntent, mBluetoothBridge.REQUEST_ENABLE_BT);
-                } else {
-                    if (mBluetoothBridge.mService.isConnected()) {
-                        //Disconnect button pressed
-                        if (mBluetoothBridge.mDevice != null) {
-                            mBluetoothBridge.mService.disconnect();
-                        }
-                    } else {
-                        //Connect button pressed, open DeviceListActivity class, with popup windows that scan for devices
-
-                        Intent newIntent = new Intent(MainActivity.this, DeviceListActivity.class);
-                        startActivityForResult(newIntent, mBluetoothBridge.REQUEST_SELECT_DEVICE);
-                    }
-                }
-            }
-        });*/
     }
 
     @Override
@@ -605,12 +384,6 @@ public class MainActivity extends AppCompatActivity {
             ivBt.setImageResource(R.drawable.bluetooth_off);
         }
     }
-
-
-
-    /**
-     * ----------------------- Bluetooth Service -------------------------------
-     */
 
     private void ble_service_init() {
         Intent bindIntent = new Intent(this, BleDataTransferService.class);
@@ -657,7 +430,6 @@ public class MainActivity extends AppCompatActivity {
             String action = intent.getAction();
 
             final Intent mIntent = intent;
-            //*********************//
             if (action.equals(BleDataTransferService.ACTION_GATT_CONNECTED)) {
                 runOnUiThread(new Runnable() {
                     public void run() {
@@ -670,7 +442,6 @@ public class MainActivity extends AppCompatActivity {
                             @Override
                             public void onFinish() {
                                 mBluetoothBridge.mConnectionSuccess = true;
-                                //bleStateImageChange();
                                 Log.d("@ckw", "onFinish!"); //@ckw
 
                                 if(mBluetoothBridge.mService.isConnected()) {
@@ -686,21 +457,15 @@ public class MainActivity extends AppCompatActivity {
                 });
             }
 
-            //*********************//
             if (action.equals(BleDataTransferService.ACTION_GATT_DISCONNECTED)) {
                 runOnUiThread(new Runnable() {
                     public void run() {
 
                         mBluetoothBridge.mState = BluetoothBridge.UART_PROFILE_DISCONNECTED;
                         mBluetoothBridge.mConnectionSuccess = false;
-                        //mUartData[0] = mUartData[1] = mUartData[2] = mUartData[3] = mUartData[4] = mUartData[5] = 0;
                         Arrays.fill(mBluetoothBridge.mUartData, (byte)0);
                         mBluetoothBridge.mService.close();
-                        //mTextViewMtu.setText("-");
-                        //mTextViewConInt.setText("-");
-                        //mConnectionProgDialog.hide();
                         Log.d(TAG, "UART_DISCONNECT_MSG");
-                        //bleStateImageChange();
                     }
                 });
             }
@@ -724,8 +489,6 @@ public class MainActivity extends AppCompatActivity {
                 double COPy = 0;
 
                 final byte[] txValue = intent.getByteArrayExtra(BleDataTransferService.EXTRA_DATA);
-
-                //Log.d("@ckw","Ble Data:"+Arrays.toString(txValue)); //@ckw
 
                 if (txValue.length == 16) {
 
@@ -754,22 +517,12 @@ public class MainActivity extends AppCompatActivity {
 
                     DecimalFormat decimalFormat = new DecimalFormat("#0.0000");
                     String str = decimalFormat.format(raw_LC1);
-                    //tvLC_7.setText(str+" mV");
-                    //Log.d("@ckw", "1:"+str); // 왼쪽 아래
 
                     str = decimalFormat.format(raw_LC2);
-                    //tvLC_5.setText(str+" mV");
-                    //Log.d("@ckw", "2:"+str); // 오른쪽 아래
 
                     str = decimalFormat.format(raw_LC3);
-                    //tvLC_11.setText(str+" mV");
-                    //Log.d("@ckw", "3:"+str); // 왼쪽 위
 
                     str = decimalFormat.format(raw_LC4);
-                    //tvLC_1.setText(str+" mV");
-                    //Log.d("@ckw", "4:"+str); // 오른쪽 위
-
-                    //Log.d("@ckw", "1:"+Integer.toString((int)(Math.abs(raw_LC1)*10)) );
 
                     double LF = (Math.abs(raw_LC3)*100);
                     double RF = (Math.abs(raw_LC4)*100);
@@ -786,7 +539,6 @@ public class MainActivity extends AppCompatActivity {
                     verticalPosPercent = LF_percent + RF_percent;
                     horizontalPosPercent = RF_percent + RB_percent;
 
-                    //Log.d("@ckw", "whole value:"+Double.toString(wholeValue));
                     if(isReset && wholeValue > PRESSURE_STANDARD) { // 최소 데이터 크기 30 필요
                         circleProgress_01.setProgress( LF_percent );
                         circleProgress_02.setProgress( RF_percent );
@@ -854,15 +606,6 @@ public class MainActivity extends AppCompatActivity {
                     xo = Math.abs(raw_LC4);
                     oy = Math.abs(raw_LC1);
                     xy = Math.abs(raw_LC2);
-                    //Log.d("@", "1:"+oo); // 왼쪽 위 ( - 연산 )
-                    // default: 3.6 // 1.5,1.5,2.0
-                    //Log.d("@", "2:"+xo); // 오른쪽 위 ( + 연산 )
-                    // default: 1.3 // 6.0,7.0,7.2
-                    //Log.d("@", "3:"+oy); // 왼쪽 아래 ( - 연산 )
-                    // default: 4.5 // 1.0,0.9,1.2
-                    //Log.d("@", "4:"+xy); // 오른쪽 아래 ( + 연산 )
-                    // default: 2.3 // 8.0,8.0
-
 
                     Fz = oo + xo + oy + xy;
 
@@ -870,24 +613,8 @@ public class MainActivity extends AppCompatActivity {
                     COPy = ( 1 + ((oy +xy) - (oo + xo))/Fz ) * 650 / 2;
 
                     str = decimalFormat.format(COPx);
-                    //tvCOPX.setText(str);
 
                     str = decimalFormat.format(COPy);
-                    //tvCOPY.setText(str);
-
-
-                    /*if(Fz < 0.5){
-                        IVCIR.setVisibility(View.INVISIBLE);
-                    }else{
-                        IVCIR.setVisibility(View.VISIBLE);
-                    }*/
-
-                    //IVCIR.setX((float)COPx+off_x);
-                    //IVCIR.setY((float)COPy+off_y);
-                    //float dataX = (float)COPx+off_x; //@ckw
-                    //float dataY = (float)COPy+off_y;
-                    //Log.d("@ckw", "x"+Float.toString(dataX));
-                    //Log.d("@ckw", "y"+Float.toString(dataY));
 
                     if(!resetAttempt) { // 최초 초기화
                         resetAttempt = true;
