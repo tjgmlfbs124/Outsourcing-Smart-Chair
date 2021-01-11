@@ -335,7 +335,7 @@ public class MainActivity extends AppCompatActivity {
         mBluetoothBridge.mBtAdapter = BluetoothAdapter.getDefaultAdapter();
         if (mBluetoothBridge.mBtAdapter == null) {
             Toast.makeText(this, "Bluetooth is not available", Toast.LENGTH_LONG).show();
-            finish();
+//            finish();
             return;
         }
 
